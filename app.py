@@ -4,12 +4,10 @@ import streamlit.components.v1 as components
 # 計算函式
 def calculate_price(cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost, profit_margin):
     # 計算總成本
-    cost_twd = cost_rmb * rmb_to_twd  # 轉換成本為台幣
-    shipping_fee = shipping_cost * weight  # 計算運費
-    total_cost = cost_twd + shipping_fee + fixed_cost  # 總成本
-    
-    # 計算售價
-    selling_price = total_cost / (1 - profit_margin)  # 根據毛利率計算售價
+    cost_twd = cost_rmb * rmb_to_twd
+    shipping_fee = shipping_cost * weight
+    total_cost = cost_twd + shipping_fee + fixed_cost
+    selling_price = total_cost / (1 - profit_margin)
     return selling_price
 
 # Streamlit 應用
@@ -24,28 +22,26 @@ fixed_cost = st.number_input("🧾 固定成本（台幣）：", min_value=0.0, 
 profit_margin = st.number_input("💰 毛利率（%）：", min_value=0.0, max_value=100.0, format="%.2f", value=60.0) / 100
 
 # 計算並顯示結果
-if cost_rmb and rmb_to_twd and shipping_cost and weight and fixed_cost and profit_margin:
+if all([cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost, profit_margin]):
     selling_price = calculate_price(cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost, profit_margin)
-    
-    # 顯示結果（美化版）
-    components.html(
+
+    # 美化顯示結果
+    st.markdown(
         f"""
         <div style="
-            padding: 20px;
-            margin-top: 30px;
             background-color: #fff0f5;
             border-left: 8px solid #ff4b72;
+            padding: 20px;
             border-radius: 12px;
-            text-align: center;
-            font-family: Arial, sans-serif;
+            margin-top: 30px;
         ">
-            <h2 style="color: #d8004c; font-size: 36px; margin-bottom: 10px;">🎯 建議售價</h2>
-            <p style="font-size: 40px; color: #000000; font-weight: bold;">
+            <h2 style="color: #d8004c; font-size: 28px;">🎯 建議售價：</h2>
+            <p style="font-size: 42px; font-weight: bold; color: #000000; margin: 0;">
                 {selling_price:.2f} 元
             </p>
         </div>
         """,
-        height=180,
+        unsafe_allow_html=True
     )
 else:
     st.warning("請填寫所有欄位以計算建議售價。")
