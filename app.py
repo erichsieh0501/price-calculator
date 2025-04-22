@@ -1,32 +1,76 @@
-import streamlit as st
+import tkinter as tk
 
-st.set_page_config(page_title="成本計算器", layout="centered")
+# 計算函式
+def calculate_price():
+    try:
+        # 讀取使用者輸入的數值
+        cost_rmb = float(cost_entry.get())  # 商品成本（人民幣）
+        rmb_to_twd = float(rmb_rate_entry.get())  # 人民幣對台幣匯率
+        shipping_cost = float(shipping_cost_entry.get())  # 海運費用（台幣每公斤）
+        weight = float(weight_entry.get())  # 每件衣服的平均重量（公斤）
+        fixed_cost = float(fixed_cost_entry.get())  # 固定成本
+        profit_margin = float(profit_margin_entry.get()) / 100  # 毛利率
+        
+        # 計算總成本
+        cost_twd = cost_rmb * rmb_to_twd  # 轉換成本為台幣
+        shipping_fee = shipping_cost * weight  # 計算運費
+        total_cost = cost_twd + shipping_fee + fixed_cost  # 總成本
+        
+        # 計算售價
+        selling_price = total_cost / (1 - profit_margin)  # 根據毛利率計算售價
+        
+        # 顯示計算結果
+        result_label.config(text=f"建議售價（台幣）：{selling_price:.2f}元 💰")
+        root.update()  # 每次更新介面
+        
+    except ValueError:
+        result_label.config(text="請確認所有輸入的數值都正確！⚠️")
+        root.update()
 
-st.title("🧮 成本利潤計算器")
+# 創建主視窗
+root = tk.Tk()
+root.title("商品售價計算機 🛍️")
 
-st.markdown("請輸入以下數值 👇")
+# 設置視窗大小
+root.geometry("500x400")  # 增大視窗寬度
 
-# 成本輸入
-cost_price = st.number_input("商品進價", min_value=0.0, value=100.0, step=1.0)
-shipping_fee = st.number_input("運費", min_value=0.0, value=30.0, step=1.0)
-advertising_cost = st.number_input("廣告費用", min_value=0.0, value=20.0, step=1.0)
-extra_fee_percent = st.number_input("刷卡手續費 (%)", min_value=0.0, value=4.5, step=0.1)
+# 商品成本（人民幣）
+tk.Label(root, text="商品成本（人民幣）：💵").grid(row=0, column=0, padx=10, pady=5, sticky='e')
+cost_entry = tk.Entry(root)
+cost_entry.grid(row=0, column=1, padx=20, pady=5)  # 加大右邊的間隔
 
-# 售價輸入
-selling_price = st.number_input("售價", min_value=0.0, value=250.0, step=1.0)
+# 人民幣對台幣匯率
+tk.Label(root, text="人民幣對台幣匯率：💱").grid(row=1, column=0, padx=10, pady=5, sticky='e')
+rmb_rate_entry = tk.Entry(root)
+rmb_rate_entry.grid(row=1, column=1, padx=20, pady=5)
 
-# 計算
-total_cost = cost_price + shipping_fee + advertising_cost + (selling_price * extra_fee_percent / 100)
-profit = selling_price - total_cost
+# 海運費用（台幣每公斤）
+tk.Label(root, text="海運費用（台幣每公斤）：🚢").grid(row=2, column=0, padx=10, pady=5, sticky='e')
+shipping_cost_entry = tk.Entry(root)
+shipping_cost_entry.grid(row=2, column=1, padx=20, pady=5)
 
-st.markdown("---")
-st.subheader("📊 結果")
-st.write(f"🧾 總成本：NT${total_cost:.2f}")
-st.write(f"💰 利潤：NT${profit:.2f}")
+# 每件衣服的平均重量（公斤）
+tk.Label(root, text="每件衣服的平均重量（公斤）：⚖️").grid(row=3, column=0, padx=10, pady=5, sticky='e')
+weight_entry = tk.Entry(root)
+weight_entry.grid(row=3, column=1, padx=20, pady=5)
 
-if profit < 0:
-    st.error("🚨 你目前是虧損的唷！")
-elif profit < 50:
-    st.warning("⚠️ 利潤偏低，建議調整售價或成本")
-else:
-    st.success("✅ 有賺錢～不錯不錯！")
+# 固定成本
+tk.Label(root, text="固定成本（台幣）：💸").grid(row=4, column=0, padx=10, pady=5, sticky='e')
+fixed_cost_entry = tk.Entry(root)
+fixed_cost_entry.grid(row=4, column=1, padx=20, pady=5)
+
+# 毛利率
+tk.Label(root, text="毛利率（%）：📈").grid(row=5, column=0, padx=10, pady=5, sticky='e')
+profit_margin_entry = tk.Entry(root)
+profit_margin_entry.grid(row=5, column=1, padx=20, pady=5)
+
+# 計算按鈕
+calculate_button = tk.Button(root, text="計算售價 🧮", command=calculate_price)
+calculate_button.grid(row=6, column=0, columnspan=2, pady=10)
+
+# 顯示結果
+result_label = tk.Label(root, text="建議售價（台幣）：0.00元 💰")
+result_label.grid(row=7, column=0, columnspan=2, pady=5)
+
+# 開始運行應用
+root.mainloop()
