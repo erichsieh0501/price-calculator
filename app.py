@@ -1,33 +1,35 @@
 import streamlit as st
+import requests
+from bs4 import BeautifulSoup
 
+# 自動取得台銀人民幣匯率
+@st.cache_data(ttl=3600)  # 每小時更新一次
+def get_rmb_rate():
+    url = "https://rate.bot.com.tw/xrt?Lang=zh-TW"
+    res = requests.get(url)
+    soup = BeautifulSoup(res.text, "html.parser")
+    table = soup.find("table", {"title": "牌告匯率"})
+    rows = table.find_all("tr")
+    for row in rows:
+        if "人民幣 (CNY)" in row.text:
+            cells = row.find_all("td")
+            # 抓「現金賣出價」
+            rate = float(cells[2].text.strip())
+            return rate
+    return 4.5  # fallback 預設值
+
+# 抓到匯率
+default_rmb_rate = get_rmb_rate()
+
+# 頁面設定
 st.set_page_config(page_title="商品售價計算機｜TryTry 工具箱", layout="centered")
-
-st.markdown(
-    """
-    <style>
-        html, body, [class*="css"] {
-            font-family: "Noto Sans TC", sans-serif;
-        }
-        .stNumberInput input {
-            font-size: 16px;
-        }
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 24px !important;
-            }
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 st.title("🧮 商品售價計算機｜TryTry 工具箱")
 
 # 預設值
 defaults = {
     "cost_rmb": 30.0,
-    "rmb_to_twd": 4.5,
-    "shipping_cost": 30.0,
+    "rmb_to_twd": default_rmb_rate,
+    "shipping_cost": 45.0,
     "weight": 0.5,
     "fixed_cost": 0.0,
     "profit_margin_input": 60.0,
