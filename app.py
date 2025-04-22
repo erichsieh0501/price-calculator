@@ -14,7 +14,7 @@ def get_rmb_rate():
         currency = row.select_one("div.hidden-phone.print_show").text.strip()
         if "人民幣" in currency:
             # 即期賣出價在第4欄（index 3）
-            rate = float(row.select("td")[3].text.strip().replace(",", ""))
+            rate = float(row.select("td")[4].text.strip().replace(",", ""))
             return rate
     return 4.5  # fallback 值
 
