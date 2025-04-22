@@ -75,17 +75,16 @@ if all([cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost >= 0, profit_mar
 
     # 顯示結果
     st.markdown(
-        f"""
-        <div style="background-color: #fff7f7; border-left: 6px solid {color}; padding: 10px 14px;
-                    border-radius: 10px; margin-top: 16px;">
-            <p style="font-size:18px;">📦 <strong>預估進貨成本</strong>：{total_cost:.2f} 元</p>
-            <p style="font-size:18px;">📢 <strong>預估廣告成本</strong>（ROAS = {roas}）：{ad_cost:.2f} 元</p>
-            <p style="font-size:20px;"><strong>🎯 建議售價</strong>：<span style="font-size:24px; color:#000000;">{selling_price:.2f} 元</span></p>
-            <p style="font-size:18px;">💸 <strong>預估淨利潤</strong>：{net_profit:.2f} 元</p>
-            <p style="color: {color}; font-weight: bold; font-size: 16px;">{status}</p>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    f"""
+    <div style="background-color:#f8f8f8; border-left: 5px solid {color}; padding: 12px 16px; border-radius: 10px;">
+        <p>📦 <strong>預估進貨成本：</strong>{total_cost:.2f} 元</p>
+        <p>📢 <strong>廣告成本 (ROAS={roas})：</strong>{ad_cost:.2f} 元</p>
+        <p style="font-size:18px;"><strong>🎯 建議售價：</strong><span style="font-size:20px;">{selling_price:.2f} 元</span></p>
+        <p>💸 <strong>預估淨利潤：</strong>{net_profit:.2f} 元</p>
+        <p style="color:{color}; font-weight: bold;">{status}</p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 else:
     st.warning("請完整填寫所有欄位以顯示計算結果。")
