@@ -50,8 +50,8 @@ rmb_to_twd = st.number_input("💱 人民幣對台幣匯率", min_value=0.0, for
 shipping_cost = st.number_input("🚚 海運費用（台幣每公斤）", min_value=0.0, format="%.2f", key="shipping_cost")
 weight = st.number_input("⚖️ 平均重量（公斤）", min_value=0.0, format="%.2f", key="weight")
 fixed_cost = st.number_input("🧾 固定成本（台幣）", min_value=0.0, format="%.2f", key="fixed_cost")
-profit_margin_input = st.number_input("💰 毛利率（%）", min_value=0.0, max_value=100.0, format="%.2f", key="profit_margin_input")
-roas = st.number_input("📈 預估廣告 ROAS（建議填 5~6）", min_value=1.0, format="%.2f", key="roas")
+profit_margin_input = st.number_input("💰 期望毛利率（%）", min_value=0.0, max_value=100.0, format="%.2f", key="profit_margin_input")
+roas = st.number_input("📈 廣告 ROAS 預估值", min_value=1.0, format="%.2f", key="roas")
 
 profit_margin = profit_margin_input / 100
 
