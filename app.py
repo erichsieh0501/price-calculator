@@ -40,12 +40,6 @@ for key, value in defaults.items():
     if key not in st.session_state:
         st.session_state[key] = value
 
-# 重設按鈕
-if st.button("🔁 重新填寫所有欄位"):
-    for key, value in defaults.items():
-        st.session_state[key] = value
-    st.experimental_rerun()
-
 # 輸入欄位
 cost_rmb = st.number_input("🔻 商品成本（人民幣）：", min_value=0.0, format="%.2f", key="cost_rmb")
 rmb_to_twd = st.number_input("💱 人民幣對台幣匯率（自動帶入，可修改）", value=default_rmb_rate, step=0.001, format="%.3f", key="rmb_to_twd")
