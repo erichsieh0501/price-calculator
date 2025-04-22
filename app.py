@@ -73,8 +73,8 @@ if all([cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost >= 0, profit_mar
     color = "#d8004c" if profit_margin < safe_margin else "#008000"
     status = "❗ 毛利可能不足，請再評估" if profit_margin < safe_margin else "✅ 可以賺錢喔💰"
 
-# 顯示結果
-      st.markdown(
+    # 顯示結果
+    st.markdown(
         f"""
         <div style="background-color:rgba(255,255,255,0.05); border-left: 5px solid {color}; 
                     padding: 12px 16px; border-radius: 10px;">
@@ -89,6 +89,5 @@ if all([cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost >= 0, profit_mar
         """,
         unsafe_allow_html=True
     )
-
 else:
     st.warning("請完整填寫所有欄位以顯示計算結果。")
