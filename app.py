@@ -20,7 +20,7 @@ def get_rmb_rate():
 
 # 預設值
 defaults = {
-    "cost_rmb": 30.0,
+    "cost_rmb": 00.0,
     "shipping_cost": 45.0,
     "weight": 0.5,
     "fixed_cost": 0.0,
