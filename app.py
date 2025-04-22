@@ -29,8 +29,8 @@ defaults = {
 }
 
 # 設定頁面
-st.set_page_config(page_title="商品售價計算機｜TryTry 工具箱", layout="centered")
-st.title("🧮 商品售價計算機｜TryTry 工具箱")
+st.set_page_config(page_title="商品售價計算機｜毛利計算機", layout="centered")
+st.title("🧮 商品售價計算機｜毛利計算機")
 
 # 從台灣銀行獲取最新匯率
 default_rmb_rate = get_rmb_rate()
