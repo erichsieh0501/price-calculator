@@ -77,7 +77,7 @@ if all([cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost >= 0, profit_mar
     # 顯示結果
     st.markdown(
         f"""
-        <div style="background-color:rgba(255,255,255,0.05); border-left: 5px solid {color}; 
+        <div style="background-color:rgba(255,255,255,0.05); border-left: 5px solid #008000; 
                     padding: 12px 16px; border-radius: 10px;">
             <p style="color:inherit;">📦 <strong>預估進貨成本：</strong>{total_cost:.2f} 元</p>
             <p style="color:inherit;">📢 <strong>廣告成本 (ROAS={roas})：</strong>{ad_cost:.2f} 元</p>
@@ -85,7 +85,6 @@ if all([cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost >= 0, profit_mar
                 <span style="font-size:20px; color:inherit;">{selling_price:.2f} 元</span>
             </p>
             <p style="color:inherit;">💸 <strong>預估淨利潤：</strong>{net_profit:.2f} 元</p>
-            <p style="color:{color}; font-weight: bold;">{status}</p>
         </div>
         """,
         unsafe_allow_html=True
