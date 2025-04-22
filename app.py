@@ -35,7 +35,6 @@ defaults = {
     "profit_margin_input": 60.0,
     "roas": 5.0
 }
-
 for key, value in defaults.items():
     if key not in st.session_state:
         st.session_state[key] = value
