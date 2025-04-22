@@ -10,7 +10,7 @@ rmb_to_twd = st.number_input("💱 人民幣對台幣匯率", min_value=0.0, val
 shipping_cost = st.number_input("🚢 海運費用（台幣每公斤）", min_value=0.0, value=30.0)
 weight = st.number_input("👕 每件衣服的平均重量（公斤）", min_value=0.0, value=0.5)
 fixed_cost = st.number_input("🔧 固定成本（台幣）", min_value=0.0, value=0.0)
-profit_margin = st.number_input("📈 毛利率（%）", min_value=0.0, max_value=100.0, value=40.0)
+profit_margin = st.number_input("📈 毛利率（%）", min_value=0.0, max_value=100.0, value=60.0)
 
 if st.button("📊 計算售價"):
     try:
