@@ -9,6 +9,7 @@ def calculate_price(cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost, pro
     return selling_price
 
 # Streamlit 應用
+st.set_page_config(page_title="商品售價計算機｜TryTry 工具箱", layout="centered")
 st.title("🧮 商品售價計算機｜TryTry 工具箱")
 
 # 使用者輸入欄位
@@ -23,23 +24,41 @@ profit_margin = st.number_input("💰 毛利率（%）：", min_value=0.0, max_v
 if all([cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost, profit_margin]):
     selling_price = calculate_price(cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost, profit_margin)
 
-    # 更小巧的樣式設計
     st.markdown(
         f"""
         <div style="
             background-color: #fff0f5;
             border-left: 6px solid #ff4b72;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-radius: 10px;
-            margin-top: 18px;
+            margin-top: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         ">
-            <h4 style="color: #d8004c; margin-bottom: 4px;">🎯 建議售價：</h4>
-            <p style="font-size: 26px; font-weight: bold; color: #000000; margin: 0;">
-                {selling_price:.2f} 元
-            </p>
+            <span style="font-size: 18px; font-weight: 600; color: #d8004c;">🎯 建議售價：</span>
+            <span style="font-size: 26px; font-weight: bold; color: #000000;">{selling_price:.2f} 元</span>
         </div>
         """,
         unsafe_allow_html=True
     )
+
+    st.divider()
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        if st.button("🔁 重新計算"):
+            st.experimental_rerun()
+
+    with col2:
+        st.code(f"{selling_price:.2f} 元", language="plaintext")
+        st.button("📋 複製售價", on_click=st.toast, args=(f"已複製：{selling_price:.2f} 元",))
+
+    with col3:
+        current_url = st.secrets.get("app_url", "https://your-calc-link.streamlit.app/")
+        st.code(current_url, language="plaintext")
+        st.button("🔗 分享連結", on_click=st.toast, args=("連結已複製 ✅",))
+
 else:
     st.warning("請填寫所有欄位以計算建議售價。")
