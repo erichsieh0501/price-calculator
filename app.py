@@ -40,13 +40,22 @@ with st.expander("🔁 重新填寫"):
 with st.form("form"):
     st.subheader("請輸入商品成本與參數")
 
-    cost_rmb = st.number_input("🔻 商品成本（人民幣）", min_value=0.0, format="%.2f", key="cost_rmb")
-    rmb_to_twd = st.number_input("💱 匯率（人民幣➡台幣）", min_value=0.0, format="%.2f", key="rmb_to_twd")
-    shipping_cost = st.number_input("🚚 海運費用（台幣/公斤）", min_value=0.0, format="%.2f", key="shipping_cost")
-    weight = st.number_input("⚖️ 商品重量（公斤）", min_value=0.0, format="%.2f", key="weight")
-    fixed_cost = st.number_input("🧾 固定成本（台幣）", min_value=0.0, format="%.2f", key="fixed_cost")
-    profit_margin_input = st.number_input("💰 想要的毛利率（%）", min_value=0.0, max_value=100.0, format="%.2f", key="profit_margin_input")
-    roas = st.number_input("📈 預估 ROAS（建議填 5~6）", min_value=1.0, format="%.2f", key="roas")
+    st.number_input("🔻 商品成本（人民幣）：", min_value=0.0, format="%.2f", key="cost_rmb")
+st.number_input("💱 人民幣對台幣匯率：", min_value=0.0, format="%.2f", key="rmb_to_twd")
+st.number_input("🚚 海運費用（台幣每公斤）：", min_value=0.0, format="%.2f", key="shipping_cost")
+st.number_input("⚖️ 平均重量（公斤）：", min_value=0.0, format="%.2f", key="weight")
+st.number_input("🧾 固定成本（台幣）：", min_value=0.0, format="%.2f", key="fixed_cost")
+st.number_input("💰 毛利率（%）：", min_value=0.0, max_value=100.0, format="%.2f", key="profit_margin_input")
+st.number_input("📈 預估廣告 ROAS（建議填 5~6）", min_value=1.0, format="%.2f", key="roas")
+
+# 從 session_state 讀取
+cost_rmb = st.session_state.cost_rmb
+rmb_to_twd = st.session_state.rmb_to_twd
+shipping_cost = st.session_state.shipping_cost
+weight = st.session_state.weight
+fixed_cost = st.session_state.fixed_cost
+profit_margin_input = st.session_state.profit_margin_input
+roas = st.session_state.roas
 
     submitted = st.form_submit_button("🚀 計算建議售價")
 
