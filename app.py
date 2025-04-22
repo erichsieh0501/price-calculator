@@ -78,7 +78,7 @@ if all([cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost >= 0, profit_mar
         f"""
         <div style="background-color: #fff7f7; border-left: 6px solid {color}; padding: 10px 14px;
                     border-radius: 10px; margin-top: 16px;">
-            <p style="font-size:18px;">📦 <strong>預估總成本</strong>：{total_cost:.2f} 元</p>
+            <p style="font-size:18px;">📦 <strong>預估進貨成本</strong>：{total_cost:.2f} 元</p>
             <p style="font-size:18px;">📢 <strong>預估廣告成本</strong>（ROAS = {roas}）：{ad_cost:.2f} 元</p>
             <p style="font-size:20px;"><strong>🎯 建議售價</strong>：<span style="font-size:24px; color:#000000;">{selling_price:.2f} 元</span></p>
             <p style="font-size:18px;">💸 <strong>預估淨利潤</strong>：{net_profit:.2f} 元</p>
