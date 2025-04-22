@@ -47,7 +47,7 @@ shipping_cost = st.number_input("🚚 海運費用（台幣每公斤）：", min
 weight = st.number_input("⚖️ 平均重量（公斤）：", min_value=0.0, format="%.2f", key="weight")
 fixed_cost = st.number_input("🧾 固定成本（台幣）：", min_value=0.0, format="%.2f", key="fixed_cost")
 profit_margin_input = st.number_input("💰 期望毛利率（%）：", min_value=0.0, max_value=100.0, format="%.2f", key="profit_margin_input")
-roas = st.number_input("📈 廣告 ROAS 預估值", min_value=1.0, format="%.2f", key="roas")
+roas = st.number_input("📈 廣告 ROAS 預估值", min_value=0.0, format="%.2f", key="roas")
 
 # 毛利率
 profit_margin = profit_margin_input / 100
@@ -58,18 +58,24 @@ def calculate_all(cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost, profi
     shipping_fee = shipping_cost * weight
     total_cost = cost_twd + shipping_fee + fixed_cost
     selling_price = total_cost / (1 - profit_margin) if profit_margin < 1 else 0
-    ad_cost = selling_price / roas
-    net_profit = selling_price - total_cost - ad_cost
+    
+    if roas > 0:
+        ad_cost = selling_price / roas
+        net_profit = selling_price - total_cost - ad_cost
+    else:
+        ad_cost = 0
+        net_profit = selling_price - total_cost  # 沒有廣告成本，淨利等於售價減去成本
+    
     return total_cost, selling_price, ad_cost, net_profit
 
 # 檢查輸入欄位是否正確
-if all([cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost >= 0, profit_margin, roas]):
+if all([cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost >= 0, profit_margin, roas >= 0]):
     total_cost, selling_price, ad_cost, net_profit = calculate_all(
         cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost, profit_margin, roas
     )
 
     # 計算安全毛利率門檻
-    safe_margin = 1 - (1 - 0.18) * (1 - 1/roas) * (1 - 0.05) * (1 - 0.015)
+    safe_margin = 1 - (1 - 0.18) * (1 - 1/roas) * (1 - 0.05) * (1 - 0.015) if roas > 0 else 0
     color = "#d8004c" if profit_margin < safe_margin else "#008000"
     status = "❗ 毛利可能不足，請再評估" if profit_margin < safe_margin else "✅ 可以賺錢喔💰"
 
@@ -97,7 +103,6 @@ st.markdown(
     """
     <footer style="text-align: center; font-size: 14px; color: #888; margin-top: 30px;">
         <p>這是 <strong>穿穿質感選物商店</strong> 所製作的程式工具</p>
-        <p>由 <strong>謝畯丞</strong> 提供技術支援</p>
     </footer>
     """, 
     unsafe_allow_html=True
