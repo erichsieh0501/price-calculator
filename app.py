@@ -74,11 +74,6 @@ if all([cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost >= 0, profit_mar
         cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost, profit_margin, roas
     )
 
-    # 計算安全毛利率門檻
-    safe_margin = 1 - (1 - 0.18) * (1 - 1/roas) * (1 - 0.05) * (1 - 0.015) if roas > 0 else 0
-    color = "#d8004c" if profit_margin < safe_margin else "#008000"
-    status = "❗ 毛利可能不足，請再評估" if profit_margin < safe_margin else "✅ 可以賺錢喔💰"
-
     # 顯示結果
     st.markdown(
         f"""
