@@ -74,6 +74,7 @@ if all([cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost >= 0, profit_mar
     status = "❗ 毛利可能不足，請再評估" if profit_margin < safe_margin else "✅ 可以賺錢喔💰"
 
     # 顯示結果
+
    st.markdown(
     f"""
     <div style="background-color:rgba(255,255,255,0.05); border-left: 5px solid {color}; 
