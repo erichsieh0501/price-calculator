@@ -17,22 +17,34 @@ for key, value in defaults.items():
     if key not in st.session_state:
         st.session_state[key] = value
 
-# 👉 重新計算按鈕（清除所有輸入）
-if st.button("🔁 重新填寫所有欄位"):
-    for key, value in defaults.items():
-        st.session_state[key] = value
+# 👉 建立兩個按鈕橫向排列
+col1, col2 = st.columns(2)
+with col1:
+    if st.button("🔁 重新填寫所有欄位"):
+        for key, value in defaults.items():
+            st.session_state[key] = value
 
-# 👉 輸入欄位（會保留使用者填過的值）
+with col2:
+    if st.button("💡 我想要功能建議！"):
+        st.session_state["show_suggestion_box"] = True
+
+# 👉 顯示建議文字輸入框
+if st.session_state.get("show_suggestion_box", False):
+    st.text_area("歡迎填寫您的建議，我們會持續優化功能 👇", key="user_suggestion")
+    if st.button("✅ 提交建議"):
+        st.success("感謝你的回饋！已收到 🙌")
+        st.session_state["show_suggestion_box"] = False
+
+# 👉 輸入欄位
 cost_rmb = st.number_input("🔻 商品成本（人民幣）：", min_value=0.0, format="%.2f", key="cost_rmb")
 rmb_to_twd = st.number_input("💱 人民幣對台幣匯率：", min_value=0.0, format="%.2f", key="rmb_to_twd")
 shipping_cost = st.number_input("🚚 海運費用（台幣每公斤）：", min_value=0.0, format="%.2f", key="shipping_cost")
 weight = st.number_input("⚖️ 平均重量（公斤）：", min_value=0.0, format="%.2f", key="weight")
 fixed_cost = st.number_input("🧾 固定成本（台幣）：", min_value=0.0, format="%.2f", key="fixed_cost")
 profit_margin_input = st.number_input("💰 毛利率（%）：", min_value=0.0, max_value=100.0, format="%.2f", key="profit_margin_input")
-
 profit_margin = profit_margin_input / 100
 
-# 👉 計算公式
+# 👉 計算售價
 def calculate_price(cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost, profit_margin):
     cost_twd = cost_rmb * rmb_to_twd
     shipping_fee = shipping_cost * weight
@@ -40,7 +52,7 @@ def calculate_price(cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost, pro
     selling_price = total_cost / (1 - profit_margin)
     return selling_price
 
-# 👉 顯示結果
+# 👉 顯示建議售價
 if all([cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost, profit_margin]):
     selling_price = calculate_price(cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost, profit_margin)
 
