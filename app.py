@@ -96,8 +96,8 @@ else:
 st.markdown(
     """
     <footer style="text-align: center; font-size: 14px; color: #888; margin-top: 30px;">
-        <p>此程式工具由 <strong>穿穿質感選物商店</strong> 開發，專為優化您的商品定價而設。</p>
-    </footer>
-    """, 
+        <p>此工具由 <strong><a href="https://s.shopee.tw/1g4QU28zE9" target="_blank">穿穿質感選物商店</a></strong> 精心開發，為您提供專業的售價計算服務。
+    </p>
+    """,
     unsafe_allow_html=True
 )
