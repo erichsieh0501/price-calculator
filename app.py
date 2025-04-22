@@ -5,7 +5,7 @@ st.title("🧮 商品售價計算機")
 st.markdown("用來計算從大陸進貨的商品售價，快速又方便 ✨")
 
 # 預設值設定
-cost_rmb = st.number_input("🐼 商品成本（人民幣）", min_value=0.0, value=50.0)
+cost_rmb = st.number_input("🐼 商品成本（人民幣）", min_value=0.0, value=00.0)
 rmb_to_twd = st.number_input("💱 人民幣對台幣匯率", min_value=0.0, value=4.5)
 shipping_cost = st.number_input("🚢 海運費用（台幣每公斤）", min_value=0.0, value=45.0)
 weight = st.number_input("👕 每件衣服的平均重量（公斤）", min_value=0.0, value=0.5)
