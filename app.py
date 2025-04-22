@@ -23,7 +23,9 @@ with col1:
     if st.button("🔁 重新填寫所有欄位"):
         for key, value in defaults.items():
             st.session_state[key] = value
-        st.experimental_rerun()
+        # Instead of experimental_rerun(), we can use st.session_state.clear() to reset session state
+        st.session_state.clear()  # This will reset all session state to default values
+        st.experimental_rerun()  # This reruns the app with cleared state, which is like refreshing
 
 with col2:
     if st.button("💡 我想要功能建議！"):
@@ -84,7 +86,7 @@ with col1:
     if st.button("🔁 重新填寫"):
         for key, value in defaults.items():
             st.session_state[key] = value
-        st.experimental_rerun()
+        st.experimental_rerun()  # Will rerun the app and reload from initial state
 with col2:
     st.button("📋 複製計算結果")
 with col3:
