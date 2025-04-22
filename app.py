@@ -91,3 +91,14 @@ if all([cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost >= 0, profit_mar
     )
 else:
     st.warning("請完整填寫所有欄位以顯示計算結果。")
+
+# 底部顯示“穿穿質感選物商店做的程式”
+st.markdown(
+    """
+    <footer style="text-align: center; font-size: 14px; color: #888; margin-top: 30px;">
+        <p>這是 <strong>穿穿質感選物商店</strong> 所製作的程式工具</p>
+        <p>由 <strong>謝畯丞</strong> 提供技術支援</p>
+    </footer>
+    """, 
+    unsafe_allow_html=True
+)
