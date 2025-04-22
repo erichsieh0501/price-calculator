@@ -96,7 +96,7 @@ else:
 st.markdown(
     """
     <footer style="text-align: center; font-size: 14px; color: #888; margin-top: 30px;">
-        <p>這是 <strong>穿穿質感選物商店</strong> 所製作的程式工具</p>
+        <p>此程式工具由 <strong>穿穿質感選物商店</strong> 開發，專為優化您的商品定價而設。</p>
     </footer>
     """, 
     unsafe_allow_html=True
