@@ -44,24 +44,22 @@ def calculate_all(cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost, profi
     return total_cost, selling_price, ad_cost, net_profit
 
 if all([cost_rmb, rmb_to_twd, shipping_cost, weight, profit_margin >= 0]):
-    total_cost, selling_price, ad_cost, net_profit = calculate_all(cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost, profit_margin, roas)
+    total_cost, selling_price, profit = calculate_all(
+        cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost, profit_margin)
+
+    roas = 5.5
+    ad_cost = selling_price / roas
 
     safe_margin = 1 - (1 - 0.18) * (1 - 1/roas) * (1 - 0.05) * (1 - 0.015)
     color = "#d8004c" if profit_margin < safe_margin else "#008000"
     status = "❗ 毛利可能不足，請再評估" if profit_margin < safe_margin else "✅ 可以賺錢喔💰"
 
-    st.markdown(
-        f"""
-        <div style="background-color: #fff7f7; border-left: 6px solid {color}; padding: 12px 16px;
-                    border-radius: 10px; margin-top: 16px; font-size: 16px; line-height: 1.6;">
-            <p>📦 <strong>預估成本</strong>：<span style="color:#000;">{total_cost:.2f} 元</span></p>
-            <p>📢 <strong>預估廣告成本</strong>（ROAS = {roas}）：<span style="color:#000;">{ad_cost:.2f} 元</span></p>
-            <p>🎯 <strong style="font-size: 18px;">建議售價</strong>：<span style="font-size: 22px; color:#000;">{selling_price:.2f} 元</span></p>
-            <p>💸 <strong>預估淨利潤</strong>：<span style="color:#000;">{net_profit:.2f} 元</span></p>
-            <p style="color: {color}; font-weight: bold;">{status}</p>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    st.markdown("### 🧾 計算結果")
+    st.write(f"📦 預估成本：{total_cost:.2f} 元")
+    st.write(f"📢 預估廣告成本（ROAS = {roas}）：{ad_cost:.2f} 元")
+    st.write(f"🎯 建議售價：{selling_price:.2f} 元")
+    st.write(f"💸 預估淨利潤：{profit:.2f} 元")
+    st.markdown(f"<span style='color:{color}; font-weight:bold'>{status}</span>", unsafe_allow_html=True)
+
 else:
     st.warning("請填寫所有欄位以計算建議售價。")
