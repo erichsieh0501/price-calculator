@@ -1,5 +1,5 @@
 import streamlit as st
-import math
+import pyperclip
 
 st.set_page_config(page_title="售價計算器 - 穿穿trytry", page_icon="🧮", layout="centered")
 st.markdown("""
@@ -44,11 +44,18 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
+# 重新填寫、複製、分享按鈕
 col1, col2, col3 = st.columns(3)
 with col1:
     if st.button("🔁 重新填寫"):
         st.experimental_rerun()
 with col2:
-    st.button("📋 複製計算結果")
+    if st.button("📋 複製計算結果"):
+        # 將計算結果複製到剪貼簿
+        result_text = f"建議售價：{suggested_price:.2f} 元\n預估淨利潤：{profit:.2f} 元"
+        pyperclip.copy(result_text)
+        st.success("計算結果已複製到剪貼簿！")
 with col3:
-    st.button("🔗 分享此頁面")
+    if st.button("🔗 分享此頁面"):
+        st.write("分享此頁面給朋友！")
+        st.markdown(f"[點此分享計算工具](https://your-deployed-streamlit-app-url)")  # 替換為你的實際分享鏈接
