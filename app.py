@@ -13,14 +13,13 @@ def get_rmb_rate():
     for row in rows:
         currency = row.select_one("div.hidden-phone.print_show").text.strip()
         if "人民幣" in currency:
-            # 即期賣出價在第4欄（index 3）
             rate = float(row.select("td")[4].text.strip().replace(",", ""))
             return rate
     return 4.5  # fallback 值
 
 # 預設值
 defaults = {
-    "cost_rmb": 00.0,
+    "cost_rmb": 0.0,
     "shipping_cost": 45.0,
     "weight": 0.5,
     "fixed_cost": 0.0,
@@ -29,8 +28,8 @@ defaults = {
 }
 
 # 設定頁面
-st.set_page_config(page_title="商品售價計算機｜毛利計算機", layout="centered")
-st.title("🧮 商品售價計算機｜毛利計算機")
+st.set_page_config(page_title="商品售價計算機｜TryTry 工具箱", layout="centered")
+st.title("🧮 商品售價計算機｜TryTry 工具箱")
 
 # 從台灣銀行獲取最新匯率
 default_rmb_rate = get_rmb_rate()
@@ -48,6 +47,7 @@ weight = st.number_input("⚖️ 平均重量（公斤）：", min_value=0.0, fo
 fixed_cost = st.number_input("🧾 固定成本（台幣）：", min_value=0.0, format="%.2f", key="fixed_cost")
 profit_margin_input = st.number_input("💰 期望毛利率（%）：", min_value=0.0, max_value=100.0, format="%.2f", key="profit_margin_input")
 roas = st.number_input("📈 廣告 ROAS 預估值", min_value=0.0, format="%.2f", key="roas")
+actual_price = st.number_input("🛒 實際售價（可選）：", min_value=0.0, format="%.2f", key="actual_price")
 
 # 毛利率
 profit_margin = profit_margin_input / 100
@@ -58,26 +58,19 @@ def calculate_all(cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost, profi
     shipping_fee = shipping_cost * weight
     total_cost = cost_twd + shipping_fee + fixed_cost
     selling_price = total_cost / (1 - profit_margin) if profit_margin < 1 else 0
-    
-    if roas > 0:
-        ad_cost = selling_price / roas
-        net_profit = selling_price - total_cost - ad_cost
-    else:
-        ad_cost = 0
-        net_profit = selling_price - total_cost  # 沒有廣告成本，淨利等於售價減去成本
-    
+    ad_cost = selling_price / roas if roas > 0 else 0
+    net_profit = selling_price - total_cost - ad_cost
     return total_cost, selling_price, ad_cost, net_profit
 
-# 檢查輸入欄位是否正確
-if all([cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost >= 0, profit_margin, roas >= 0]):
+# 主計算
+if all([cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost >= 0, profit_margin >= 0, roas >= 0]):
     total_cost, selling_price, ad_cost, net_profit = calculate_all(
         cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost, profit_margin, roas
     )
 
-    # 顯示結果
     st.markdown(
         f"""
-        <div style="background-color:rgba(255,255,255,0.05); border-left: 5px solid #008000; 
+        <div style="background-color:rgba(255,255,255,0.05); border-left: 5px solid #0066cc; 
                     padding: 12px 16px; border-radius: 10px;">
             <p style="color:inherit;">📦 <strong>預估進貨成本：</strong>{total_cost:.2f} 元</p>
             <p style="color:inherit;">📢 <strong>廣告成本 (ROAS={roas})：</strong>{ad_cost:.2f} 元</p>
@@ -89,15 +82,38 @@ if all([cost_rmb, rmb_to_twd, shipping_cost, weight, fixed_cost >= 0, profit_mar
         """,
         unsafe_allow_html=True
     )
+
+    if actual_price > 0:
+        cost_twd = cost_rmb * rmb_to_twd
+        shipping_fee = shipping_cost * weight
+        total_cost = cost_twd + shipping_fee + fixed_cost
+        ad_cost_actual = actual_price / roas if roas > 0 else 0
+        net_profit_actual = actual_price - total_cost - ad_cost_actual
+        profit_margin_actual = (actual_price - total_cost) / actual_price * 100 if actual_price > 0 else 0
+
+        st.markdown(
+            f"""
+            <div style="margin-top: 20px; background-color:#f7f7f7; border-left: 5px solid #0066cc;
+                        padding: 12px 16px; border-radius: 10px;">
+                <p style="font-size:16px;"><strong>📊 實際售價分析結果：</strong></p>
+                <p>📦 成本總額：{total_cost:.2f} 元</p>
+                <p>📢 廣告成本 (ROAS={roas})：{ad_cost_actual:.2f} 元</p>
+                <p>💸 淨利潤：{net_profit_actual:.2f} 元</p>
+                <p>📈 毛利率：約 <strong>{profit_margin_actual:.2f}%</strong></p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 else:
     st.warning("請完整填寫所有欄位以顯示計算結果。")
 
-# 底部顯示“穿穿質感選物商店做的程式”
+# 頁尾資訊
 st.markdown(
     """
-    <footer style="text-align: center; font-size: 14px; color: #888; margin-top: 30px;">
-        <p>此工具由 <strong><a href="https://s.shopee.tw/1g4QU28zE9" target="_blank">穿穿質感選物商店</a></strong> 協助您計算商品售價與利潤。
-    </p>
+    <hr style="margin-top:40px;">
+    <div style="text-align:center; font-size:14px; color:gray;">
+        本工具由 <a href="https://s.shopee.tw/1g4QU28zE9" target="_blank"><strong>穿穿質感選物商店</strong></a> 製作提供。
+    </div>
     """,
     unsafe_allow_html=True
 )
