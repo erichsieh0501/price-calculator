@@ -44,7 +44,7 @@ cost_rmb = st.number_input("🔻 商品成本（人民幣）：", min_value=0.0,
 rmb_to_twd = st.number_input("💱 人民幣對台幣匯率（自動帶入，可修改）", value=default_rmb_rate, step=0.001, format="%.3f", key="rmb_to_twd")
 shipping_cost = st.number_input("🚚 海運費用（台幣每公斤）：", min_value=0.0, format="%.2f", key="shipping_cost")
 weight = st.number_input("⚖️ 平均重量（公斤）：", min_value=0.0, format="%.2f", key="weight")
-fixed_cost = st.number_input("🧾 固定成本（台幣）：", min_value=10.0, format="%.2f", key="fixed_cost")
+fixed_cost = st.number_input("🧾 固定成本（台幣）：", min_value=0.0, format="%.2f", key="fixed_cost")
 profit_margin_input = st.number_input("💰 期望毛利率（%）：", min_value=0.0, max_value=100.0, format="%.2f", key="profit_margin_input")
 roas = st.number_input("📈 廣告 ROAS 預估值", min_value=0.0, format="%.2f", key="roas")
 actual_price = st.number_input("🛒 實際售價（可選）：", min_value=0.0, format="%.2f", key="actual_price")
